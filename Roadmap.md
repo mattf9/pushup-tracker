@@ -1,7 +1,7 @@
 # Roadmap / Tasks
 
 - [x] create new repo on github ;)
-- [ ] create basic web page using python flask
+- [x] create basic web page using python flask
 - [ ] create Dockerfile / docker-compose for easy deployment and testing
 - [ ] update README with documentation for deployment / testing
 - [ ] design and implement menu (home / login / logout / etc.)
