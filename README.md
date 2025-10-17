@@ -13,3 +13,6 @@ Website to track sets of pushups. Will have functionality to display statistics 
   ```
 - run it!
 `flask run`
+
+## Contributing
+If you're new to python and flask, check out https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
