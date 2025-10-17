@@ -13,4 +13,5 @@
 - [ ] add bootstrap (or similar) styling to make website mobile friendly
 - [ ] add function to allow viewing other people's statistics
 - [ ] add leaderboard (multi-user) on main page. display username and make that a hyperlink to that user's detailed stats
+- [ ] deploy to internet (IE: AWS, Digital Ocean, etc)
 - [ ] add signup function
