@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% import 'bootstrap_wtf.html' as wtf %}
+
+{% block content %}
+
+<h3>Log a set of pushups!</h3>
+<br>
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.pushup_count.label }}:
+        {{ form.pushup_count(size=5) }}
+    </p>
+    <p>{{ form.submit() }}</p>
+</form>
+<hr>
+<table id="hosts" class="table table-striped">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>When</th>
+            <th>How Many</th>
+        </tr>
+    </thead>
+    <tbody>
+
+
+{% for pushup_set in pushup_sets  %}
+    <tr>
+        <td>{{ pushup_set.username }}</td>
+        <td>{{ pushup_set.pushup_time }}</td>
+        <td>{{ pushup_set.pushup_count }}</td>
+    </tr>
+{% endfor %}
+</tbody>
+{% endblock %}
