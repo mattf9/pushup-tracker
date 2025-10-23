@@ -6,7 +6,10 @@ content %} {% if current_user.is_anonymous %}
 <br />
 <form action="/log_set" method="post" novalidate>
   {{ form.hidden_tag() }}
-  <p>{{ form.pushup_count.label }}: {{ form.pushup_count(size=5) }}</p>
+  <p>
+    {{ form.pushup_count.label }}: {{ form.pushup_count(size=5,
+    value=pushup_average) }}
+  </p>
   <p>{{ form.submit() }}</p>
 </form>
 {% endif %}
@@ -24,7 +27,7 @@ content %} {% if current_user.is_anonymous %}
     <tr>
       <td>{{ pushup_set.who.username }}</td>
       <td>{{ pushup_set.timestamp }}</td>
-      <td>{{ pushup_set.body }}</td>
+      <td>{{ pushup_set.reps }}</td>
     </tr>
     {% endfor %}
   </tbody>
