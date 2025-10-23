@@ -1,36 +1,32 @@
-{% extends "base.html" %}
-{% import 'bootstrap_wtf.html' as wtf %}
-
-{% block content %}
-
+{% extends "base.html" %} {% import 'bootstrap_wtf.html' as wtf %} {% block
+content %} {% if current_user.is_anonymous %}
+<h3>Log in and do a set!</h3>
+{% else %}
 <h3>Log a set of pushups!</h3>
-<br>
-<form action="" method="post" novalidate>
-    {{ form.hidden_tag() }}
-    <p>
-        {{ form.pushup_count.label }}:
-        {{ form.pushup_count(size=5) }}
-    </p>
-    <p>{{ form.submit() }}</p>
+<br />
+<form action="/log_set" method="post" novalidate>
+  {{ form.hidden_tag() }}
+  <p>{{ form.pushup_count.label }}: {{ form.pushup_count(size=5) }}</p>
+  <p>{{ form.submit() }}</p>
 </form>
-<hr>
+{% endif %}
+<hr />
 <table id="hosts" class="table table-striped">
-    <thead>
-        <tr>
-            <th>User</th>
-            <th>When</th>
-            <th>How Many</th>
-        </tr>
-    </thead>
-    <tbody>
-
-
-{% for pushup_set in pushup_sets  %}
+  <thead>
     <tr>
-        <td>{{ pushup_set.username }}</td>
-        <td>{{ pushup_set.pushup_time }}</td>
-        <td>{{ pushup_set.pushup_count }}</td>
+      <th>User</th>
+      <th>When</th>
+      <th>How Many</th>
     </tr>
-{% endfor %}
-</tbody>
-{% endblock %}
+  </thead>
+  <tbody>
+    {% for pushup_set in pushup_sets %}
+    <tr>
+      <td>{{ pushup_set.who.username }}</td>
+      <td>{{ pushup_set.timestamp }}</td>
+      <td>{{ pushup_set.body }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  {% endblock %}
+</table>
