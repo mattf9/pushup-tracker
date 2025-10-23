@@ -5,23 +5,28 @@ from app import app, db
 from app.models import User, Pushup
 from datetime import datetime
 from app.forms import LoginForm, PushupForm
+from sqlalchemy import func
 
 @app.route('/')
 @app.route('/index')
 def index():
-
-    # pushup_sets = Pushup.query.all()
+    # set default number of pushups to users average
+    if current_user.is_authenticated:
+        query = db.select(func.floor(func.avg(Pushup.reps))).where(Pushup.user_id == current_user.id)
+        result = db.session.execute(query)
+        pushup_average = result.scalars().one()
+    else:
+        pushup_average = 10
     pushup_sets = db.session.execute(db.select(Pushup).order_by(Pushup.timestamp.desc())).scalars()
     form = PushupForm()
-    return render_template('index.html', title='Home', pushup_sets=pushup_sets, form=form)
-    # return render_template('index2.html', title='Home', form=form)
-    # return render_template('index.html')
+    return render_template('index.html', title='Home', pushup_sets=pushup_sets, pushup_average=pushup_average, form=form)
+
 
 
 @app.route('/log_set', methods=['POST'])
 @login_required
 def log_set():
-    pushup = Pushup(user_id = current_user.id, timestamp = datetime.now(), body = request.form['pushup_count'])
+    pushup = Pushup(user_id = current_user.id, timestamp = datetime.now(), reps = request.form['pushup_count'])
     db.session.add(pushup)
     db.session.commit()
     flash('pushup set logged!')

@@ -28,7 +28,7 @@ class User(UserMixin, db.Model):
     
 class Pushup(db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
-    body: so.Mapped[str] = so.mapped_column(sa.String(140))
+    reps: so.Mapped[int] = so.mapped_column(sa.Integer)
     timestamp: so.Mapped[datetime] = so.mapped_column(
         index=True, default=lambda: datetime.now(timezone.utc))
     user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(User.id),
@@ -37,7 +37,7 @@ class Pushup(db.Model):
     who: so.Mapped[User] = so.relationship(back_populates='pushups')
 
     def __repr__(self):
-        return '<Post {}>'.format(self.body)
+        return '<Reps {}>'.format(self.reps)
     
 @login.user_loader
 def load_user(id):
