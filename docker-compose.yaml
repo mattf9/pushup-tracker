@@ -1,0 +1,22 @@
+---
+networks:
+  frontend:
+    external: true
+services:
+  pushup_app:
+    container_name: pushup_tracker
+    image: pushup-tracker:latest
+    build: .
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.pushup_app.rule=Host(`pushup.example.com`)
+      - traefik.http.routers.pushup_app.service=pushup_tracker
+      - traefik.http.routers.pushup_app.entrypoints=web
+      - traefik.http.services.pushup_app.loadbalancer.server.port=5000
+
+    ports:
+      - '8097:5000'
+    volumes:
+      - ./data/app.db:/app.db
+    networks:
+      - frontend

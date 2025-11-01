@@ -3,6 +3,7 @@
 Website to track sets of pushups. Will have functionality to display statistics / historical information, and display a leaderboard showing multiple users.
 
 ## Install / run
+
 - clone this repo
 - install python
 - create a python virtual environment:
@@ -12,7 +13,18 @@ Website to track sets of pushups. Will have functionality to display statistics 
   pip install -r requirements.txt
   ```
 - run it!
-`flask run`
+  `flask run`
+
+# adding users to database
+
+```
+flask shell
+u = User(username='bob', email='bob@example.com')
+u.set_password('bob')
+db.session.add(u)
+db.session.commit()
+```
 
 ## Contributing
+
 If you're new to python and flask, check out https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world

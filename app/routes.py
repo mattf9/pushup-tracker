@@ -12,9 +12,12 @@ from sqlalchemy import func
 def index():
     # set default number of pushups to users average
     if current_user.is_authenticated:
-        query = db.select(func.floor(func.avg(Pushup.reps))).where(Pushup.user_id == current_user.id)
-        result = db.session.execute(query)
-        pushup_average = result.scalars().one()
+        try:
+            query = db.select(func.floor(func.avg(Pushup.reps))).where(Pushup.user_id == current_user.id)
+            result = db.session.execute(query)
+            pushup_average = result.scalars().one()
+        except:
+            pushup_average = 15
     else:
         pushup_average = 10
     pushup_sets = db.session.execute(db.select(Pushup).order_by(Pushup.timestamp.desc())).scalars()

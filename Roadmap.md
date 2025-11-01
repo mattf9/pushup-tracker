@@ -2,8 +2,8 @@
 
 - [x] create new repo on github ;)
 - [x] create basic web page using python flask
-- [ ] create Dockerfile / docker-compose for easy deployment and testing
-- [ ] update README with documentation for deployment / testing
+- [x] create Dockerfile / docker-compose for easy deployment and testing
+- [x] update README with documentation for deployment / testing
 - [x] design and implement menu (home / login / logout / etc.)
 - [x] create database - use sqlalchemy (sqlite or postgres for database engine)
 - [x] create users table (manually populate for now)

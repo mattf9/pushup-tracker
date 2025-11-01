@@ -1,5 +1,6 @@
 .vscode
 *.pyc
 app.db
+data
 settings.json
 venv
