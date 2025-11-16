@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - master 
+      - master
 
 jobs:
   docker:
@@ -17,8 +17,16 @@ jobs:
         with:
           username: ${{secrets.DOCKERHUB_USERNAME}}
           password: ${{secrets.DOCKERHUB_TOKEN}}
-      - name: Building the image
-        run: docker build -t ${{secrets.DOCKERHUB_USERNAME}}/pushup-tracker:v2 -t .${{secrets.DOCKERHUB_USERNAME}}/pushup-tracker:20251103v1
-      - name: pushing the image
-        run: docker push ${{secrets.DOCKERHUB_USERNAME}}/pushup-tracker --all-tags
-
+      # - name: Building the image
+      #   run: docker build -t ${{secrets.DOCKERHUB_USERNAME}}/pushup-tracker:v2 -t .${{secrets.DOCKERHUB_USERNAME}}/pushup-tracker:20251103v1
+      # - name: pushing the image
+      #   run: docker push ${{secrets.DOCKERHUB_USERNAME}}/pushup-tracker --all-tags
+      - name: build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: |
+            ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:latest
+            ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:${{ github.sha }}
