@@ -28,5 +28,5 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:latest
-            ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:${{ github.sha }}
+            mattf9/pushup-tracker:latest
+            mattf9/pushup-tracker:${{ github.sha }}
