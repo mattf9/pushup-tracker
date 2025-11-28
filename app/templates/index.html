@@ -14,6 +14,19 @@ content %} {% if current_user.is_anonymous %}
 </form>
 {% endif %}
 <hr />
+<h3>Leaderboard - Sets In Last 7 Days</h3>
+<table id="sets_leaderboard">
+  <tbody>
+    {% for last7 in last_7_day_sets %}
+    <tr></tr>
+    <td>{{ last7[0] }}: </td>
+    <td>{{ last7[1] }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<hr />
+<h3>Set Details - All Time</h3>
 <table id="hosts" class="table table-striped">
   <thead>
     <tr>
