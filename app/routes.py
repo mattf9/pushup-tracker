@@ -3,9 +3,10 @@ from flask_login import current_user, login_user, logout_user, login_required
 import sqlalchemy as sa
 from app import app, db
 from app.models import User, Pushup
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from app.forms import LoginForm, PushupForm
-from sqlalchemy import func
+from sqlalchemy import func, desc
+from zoneinfo import ZoneInfo
 
 @app.route('/')
 @app.route('/index')
@@ -21,8 +22,12 @@ def index():
     else:
         pushup_average = 10
     pushup_sets = db.session.execute(db.select(Pushup).order_by(Pushup.timestamp.desc())).scalars()
+    timezone = ZoneInfo('America/New_York')
+    seven_days_ago = datetime.now(timezone) - timedelta(days=7)
+    last_7_day_sets = db.session.query(User.username, func.count(Pushup.id).label('set_count')).select_from(User).join(Pushup).group_by(User.username).where(Pushup.timestamp >= seven_days_ago).order_by(desc('set_count'))
     form = PushupForm()
-    return render_template('index.html', title='Home', pushup_sets=pushup_sets, pushup_average=pushup_average, form=form)
+    return render_template('index.html', title='Home', pushup_sets=pushup_sets, pushup_average=pushup_average, 
+                           last_7_day_sets=last_7_day_sets, form=form)
 
 
 
