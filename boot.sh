@@ -2,4 +2,4 @@
 
 sleep 2
 flask db upgrade
-exec gunicorn -b :5000 --workers=6 --access-logfile - --error-logfile - pushup-tracker:app
+exec gunicorn -b :5000 --workers=3 --access-logfile - --error-logfile - pushup-tracker:app
