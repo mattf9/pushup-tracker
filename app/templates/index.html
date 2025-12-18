@@ -14,6 +14,8 @@ content %} {% if current_user.is_anonymous %}
 </form>
 {% endif %}
 <hr />
+<div class="row">
+<div class="column">
 <h3>Leaderboard - Sets In Last 7 Days</h3>
 <table id="sets_leaderboard">
   <tbody>
@@ -25,6 +27,25 @@ content %} {% if current_user.is_anonymous %}
     {% endfor %}
   </tbody>
 </table>
+</div>
+<div class="divider"></div>
+<div class="column">
+  <h3>Stats - All Users</h3>
+  <table id="stats_all_users">
+    <tbody>
+      <tr>
+        <td>All Time Sets: </td>
+        <td>{{ "{:,}".format(all_time_sets) }}</td>
+      </tr>
+      <tr>
+        <td>All Time Reps: </td>
+        <td>{{ "{:,}".format(all_time_reps) }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+<div id = "stat_detail">
 <hr />
 <h3>Set Details - All Time</h3>
 <table id="hosts" class="table table-striped">
@@ -46,3 +67,4 @@ content %} {% if current_user.is_anonymous %}
   </tbody>
   {% endblock %}
 </table>
+</div>
