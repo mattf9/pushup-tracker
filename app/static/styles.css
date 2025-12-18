@@ -1,0 +1,17 @@
+.row {
+  display: flex;
+}
+.column {
+  flex: 1;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.divider {
+  width: 1px; /* Width of the vertical bar */
+  border-left: 1px solid black;
+  background-color: white; /* Color of the vertical bar */
+}
+
+#stat_detail {
+  clear: left;
+}

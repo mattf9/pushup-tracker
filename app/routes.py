@@ -11,6 +11,8 @@ from zoneinfo import ZoneInfo
 @app.route('/')
 @app.route('/index')
 def index():
+    all_time_reps, all_time_sets = get_stats_all_users()
+
     # set default number of pushups to users average
     if current_user.is_authenticated:
         try:
@@ -27,7 +29,7 @@ def index():
     last_7_day_sets = db.session.query(User.username, func.count(Pushup.id).label('set_count')).select_from(User).join(Pushup).group_by(User.username).where(Pushup.timestamp >= seven_days_ago).order_by(desc('set_count'))
     form = PushupForm()
     return render_template('index.html', title='Home', pushup_sets=pushup_sets, pushup_average=pushup_average, 
-                           last_7_day_sets=last_7_day_sets, form=form)
+                           last_7_day_sets=last_7_day_sets, all_time_reps=all_time_reps, all_time_sets=all_time_sets, form=form)
 
 
 
@@ -61,3 +63,11 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+def get_stats_all_users():
+    query = db.session.query(func.sum(Pushup.reps).label('all_time_reps'))
+    result = db.session.execute(query)
+    all_time_reps = result.scalars().one()
+    all_time_sets = db.session.query(func.count()).select_from(Pushup).scalar()
+
+    return all_time_reps, all_time_sets
