@@ -59,7 +59,7 @@ content %} {% if current_user.is_anonymous %}
   <tbody>
     {% for pushup_set in pushup_sets %}
     <tr>
-      <td>{{ pushup_set.who.username }}</td>
+      <td><a href="{{ url_for('user', username=pushup_set.who.username) }}">{{ pushup_set.who.username }}</a></td>
       <td>{{ moment(pushup_set.timestamp).format('YYYY-MM-DD h:mm a') }}</td>
       <td>{{ pushup_set.reps }}</td>
     </tr>
