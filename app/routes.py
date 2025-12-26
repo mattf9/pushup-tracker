@@ -64,6 +64,31 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+@app.route('/user/<username>')
+@login_required
+def user(username):
+    user = db.first_or_404(sa.select(User).where(User.username ==  username)) 
+    
+    query = db.session.query(func.count(Pushup.id).label('set_count')).where(Pushup.user_id == user.id)
+    result = db.session.execute(query)
+    all_time_sets = result.scalars().one()
+
+    query = db.session.query(func.sum(Pushup.reps).filter(Pushup.user_id == user.id))
+    result = db.session.execute(query)
+    all_time_reps = result.scalars().one()
+
+    # query = db.session.query(func.max(Pushup.reps).filter(Pushup.user_id == user.id))
+    # result = db.session.execute(query)
+    # print(result)
+    # max_reps = result.scalars().one()
+    query = db.session.query(Pushup).filter(Pushup.user_id == user.id).order_by(desc(Pushup.reps)).limit(1)
+    result = db.session.execute(query)
+    print(result)
+    max_reps = result.scalars().one()
+ 
+ 
+    return render_template('user.html', user=user, all_time_sets=all_time_sets, all_time_reps=all_time_reps, max_reps=max_reps)
+
 def get_stats_all_users():
     query = db.session.query(func.sum(Pushup.reps).label('all_time_reps'))
     result = db.session.execute(query)
