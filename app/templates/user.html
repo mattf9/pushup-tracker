@@ -2,10 +2,11 @@
 <h1>User: {{ user.username }}</h1>
 <h4>All Time Sets: {{ all_time_sets }}</h4>
 <h4>All Time Reps: {{ all_time_reps }}</h4>
+{% if all_time_reps > 0 %}
 <h4>
   Best Set: {{ max_reps.reps }} reps on {{
   moment(max_reps.timestamp).format('YYYY-MM-DD') }}
 </h4>
-{% endblock %}
+{% endif %} {% endblock %}
 
 <td>{{ moment(pushup_set.timestamp).format('YYYY-MM-DD h:mm a') }}</td>

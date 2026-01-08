@@ -72,20 +72,20 @@ def user(username):
     query = db.session.query(func.count(Pushup.id).label('set_count')).where(Pushup.user_id == user.id)
     result = db.session.execute(query)
     all_time_sets = result.scalars().one()
+    if not all_time_sets:
+        print("no sets")
+        all_time_reps = 0
+        all_time_sets = 0
+        max_reps = {"reps": 0, "timestamp": ""}
+    else:
+        query = db.session.query(func.sum(Pushup.reps).filter(Pushup.user_id == user.id))
+        result = db.session.execute(query)
+        all_time_reps = result.scalars().one()
 
-    query = db.session.query(func.sum(Pushup.reps).filter(Pushup.user_id == user.id))
-    result = db.session.execute(query)
-    all_time_reps = result.scalars().one()
-
-    # query = db.session.query(func.max(Pushup.reps).filter(Pushup.user_id == user.id))
-    # result = db.session.execute(query)
-    # print(result)
-    # max_reps = result.scalars().one()
-    query = db.session.query(Pushup).filter(Pushup.user_id == user.id).order_by(desc(Pushup.reps)).limit(1)
-    result = db.session.execute(query)
-    print(result)
-    max_reps = result.scalars().one()
- 
+        query = db.session.query(Pushup).filter(Pushup.user_id == user.id).order_by(desc(Pushup.reps)).limit(1)
+        result = db.session.execute(query)
+        print(result)
+        max_reps = result.scalars().one()
  
     return render_template('user.html', user=user, all_time_sets=all_time_sets, all_time_reps=all_time_reps, max_reps=max_reps)
 
