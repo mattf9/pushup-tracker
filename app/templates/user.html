@@ -2,6 +2,18 @@
 <h1>User: {{ user.username }}</h1>
 <h4>All Time Sets: {{ all_time_sets }}</h4>
 <h4>All Time Reps: {{ all_time_reps }}</h4>
+{% if sets_this_month - sets_last_month > 0 %}
+<h4>
+  Sets Current 30 Days: {{ sets_this_month }}
+  <span style="color: green">( +{{ sets_this_month - sets_last_month }} )</span>
+</h4>
+{% else %}
+<h4>
+  Sets Current 30 Days: {{ sets_this_month }}
+  <span style="color: red">( {{ sets_this_month - sets_last_month }} )</span>
+</h4>
+{% endif %}
+<h4>Sets Prior 30 Days: {{ sets_last_month }}</h4>
 {% if all_time_reps > 0 %}
 <h4>
   Best Set: {{ max_reps.reps }} reps on {{
