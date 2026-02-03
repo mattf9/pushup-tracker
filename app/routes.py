@@ -27,9 +27,20 @@ def index():
     timezone = ZoneInfo('America/New_York')
     seven_days_ago = datetime.now(timezone) - timedelta(days=7)
     last_7_day_sets = db.session.query(User.username, func.count(Pushup.id).label('set_count')).select_from(User).join(Pushup).group_by(User.username).where(Pushup.timestamp >= seven_days_ago).order_by(desc('set_count'))
+
+    this_month = datetime.utcnow() - timedelta(days=30)
+    query = db.session.query(func.count(Pushup.id).label('set_count')).where(Pushup.timestamp >= this_month)
+    result = db.session.execute(query)
+    sets_this_month = result.scalars().one()
+
+    last_month = datetime.utcnow() - timedelta(days=60)
+    query = db.session.query(func.count(Pushup.id).label('set_count')).where(Pushup.timestamp.between(last_month, this_month))
+    result = db.session.execute(query)
+    sets_last_month = result.scalars().one()
     form = PushupForm()
     return render_template('index.html', title='Home', pushup_sets=pushup_sets, pushup_average=pushup_average, 
-                           last_7_day_sets=last_7_day_sets, all_time_reps=all_time_reps, all_time_sets=all_time_sets, form=form)
+                           last_7_day_sets=last_7_day_sets, all_time_reps=all_time_reps, all_time_sets=all_time_sets, 
+                           sets_this_month=sets_this_month, sets_last_month=sets_last_month, form=form)
 
 
 
@@ -84,10 +95,20 @@ def user(username):
 
         query = db.session.query(Pushup).filter(Pushup.user_id == user.id).order_by(desc(Pushup.reps)).limit(1)
         result = db.session.execute(query)
-        print(result)
         max_reps = result.scalars().one()
- 
-    return render_template('user.html', user=user, all_time_sets=all_time_sets, all_time_reps=all_time_reps, max_reps=max_reps)
+
+        this_month = datetime.utcnow() - timedelta(days=30)
+        query = db.session.query(func.count(Pushup.id).label('set_count')).where(Pushup.user_id == user.id).where(Pushup.timestamp >= this_month)
+        result = db.session.execute(query)
+        sets_this_month = result.scalars().one()
+
+        last_month = datetime.utcnow() - timedelta(days=60)
+        query = db.session.query(func.count(Pushup.id).label('set_count')).where(Pushup.user_id == user.id).where(Pushup.timestamp.between(last_month, this_month))
+        result = db.session.execute(query)
+        sets_last_month = result.scalars().one()
+
+    return render_template('user.html', user=user, all_time_sets=all_time_sets, all_time_reps=all_time_reps, 
+                           max_reps=max_reps, sets_this_month=sets_this_month, sets_last_month=sets_last_month)
 
 def get_stats_all_users():
     query = db.session.query(func.sum(Pushup.reps).label('all_time_reps'))

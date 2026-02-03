@@ -41,6 +41,17 @@ content %} {% if current_user.is_anonymous %}
         <td>All Time Reps: </td>
         <td>{{ "{:,}".format(all_time_reps) }}</td>
       </tr>
+      <td>Sets Current 30 Days: </td>
+      {% if sets_this_month - sets_last_month >= 0 %}
+        <td>{{ sets_this_month }} <span style="color: green">( +{{ sets_this_month - sets_last_month }} )</span></td>
+      {% else %}
+        <td>{{ sets_this_month }} <span style="color: red"> ( {{ sets_this_month - sets_last_month }} )</span></td>
+      {% endif %}
+      </tr>
+      <tr>
+        <td>Sets Prior 30 days: </td>
+        <td>{{ sets_last_month }}</td>
+      </tr>
     </tbody>
   </table>
 </div>
