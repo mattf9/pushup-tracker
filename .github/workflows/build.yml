@@ -22,7 +22,7 @@ jobs:
       # - name: pushing the image
       #   run: docker push ${{secrets.DOCKERHUB_USERNAME}}/pushup-tracker --all-tags
       - name: build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: ./Dockerfile
