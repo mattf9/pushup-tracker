@@ -51,7 +51,7 @@ def log_set():
     db.session.add(pushup)
     db.session.commit()
     flash('pushup set logged!')
-    return redirect(url_for('index'))
+    return redirect(url_for('user', username=current_user.username))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
